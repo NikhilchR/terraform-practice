@@ -7,8 +7,8 @@ jobs:
     matrix-configration:
       strategy:
         matrix:
-          os: [ubuntu-latest, ubuntu-20.04, windows-latest]
-          images: [hellow-world, alpine]
+          os: [ubuntu-latest, windows-latest]
+          images: [hello-world, alpine]
       runs-on: ${{ matrix.os }}
       steps:
       - name: Echo Docker details
