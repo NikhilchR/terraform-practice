@@ -1,9 +1,22 @@
 name: My first programm
 
-on: push
+on: 
+ #push
+  #schedule:
+   # - cron: "*/1 * * * *"
+   workflow_dispatch:
+
+env:
+    DOCKER_HUB:
 
 jobs:
     first_job:
+        env:
+            DOCKER_USERNAME:
+        #needs: array
+        concurrency: 
+            group: production-deployment
+            cancel-in-progress: true
         runs-on: ubuntu-latest
         steps:
         - name: Checkout code
@@ -14,6 +27,22 @@ jobs:
 
         - name: Add permissions
           run : chmod 755 hellowoldr.sh
+
+        - name: "Timeout minutes"
+          timeout-minutes: 1
+          run: |
+            sleep 60000s  
+
+        - name: dcker build
+          env:
+            DOCKER_PASSWORD:
+          run:
+
+        - name: Upload artifact
+          uses: actions/upload-artifact@v4
+          with:
+            name: readme.md
+            path: readme.md
 
         - name: list files
           run : ls -ltra
