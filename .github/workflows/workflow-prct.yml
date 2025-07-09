@@ -12,8 +12,11 @@ jobs:
         - name: Welcome message
           run: echo "My first prct"
 
+        - name: Add permissions
+          run : chmod 755 hellowoldr.sh
+
         - name: list files
-          run : ls
+          run : ll -altr
 
         - name: Execute shell script
           run: ./hellowoldr.sh
