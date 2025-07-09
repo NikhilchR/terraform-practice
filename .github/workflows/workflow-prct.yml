@@ -16,7 +16,7 @@ jobs:
           run : chmod 755 hellowoldr.sh
 
         - name: list files
-          run : ll -altr
+          run : ls -ltra
 
         - name: Execute shell script
           run: ./hellowoldr.sh
