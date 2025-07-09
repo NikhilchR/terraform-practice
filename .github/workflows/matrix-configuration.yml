@@ -10,7 +10,7 @@ jobs:
           os: [ubuntu-latest, windows-latest]
           images: [hello-world, alpine]
           exclude:
-          - image: alpine
+          - images: alpine
             os: windows-latest
           #include:
           #- image:   
