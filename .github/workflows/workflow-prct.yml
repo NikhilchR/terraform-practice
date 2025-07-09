@@ -15,5 +15,8 @@ jobs:
         - name: list files
           run : ls
 
+        - name: Execute shell script
+          run: ./hellowoldr.sh
+
         - name: Read file
           run: cat readme.md
