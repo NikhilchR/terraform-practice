@@ -22,10 +22,7 @@ jobs:
              ls -ltr
              cd target
              ls -ltr
-             cd ..
-             mkdir staging
-             cp target/*.jar staging
           - uses: actions/upload-artifact@v4
             with:
                 name: Package
-                path: staging   
+                path: target   
