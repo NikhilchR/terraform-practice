@@ -20,6 +20,8 @@ jobs:
              cd my-app
              mvn clean install package
              ls -ltr
+             cd target
+             ls -ltr
              mkdir staging && cp target/*.jar staging
           - uses: actions/upload-artifact@v4
             with:
