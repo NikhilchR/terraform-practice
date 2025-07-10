@@ -1,0 +1,30 @@
+name: My first programm
+
+on: 
+ #push
+  #schedule:
+   # - cron: "*/1 * * * *"
+   workflow_dispatch:
+   push:
+    # branches_ignore:
+    # - feature/*
+    # - test/**
+    branches:
+    - main
+    - '!feature/*'
+
+  pull_request:
+    types:
+      - opened
+      - closed
+    paths-ignore:
+      - readme.md
+    branches:
+       - main 
+
+jobs:
+  print:
+    runs-on: ubuntu-latest
+    steps:
+    - run: echo this job is - ${{ github.event_name }}
+    
