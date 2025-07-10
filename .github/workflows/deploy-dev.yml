@@ -9,7 +9,7 @@ jobs:
     uses: ./.github/workflows/reusable-deploy-dev-stg-prod.yml
     with:
       environment: dev
-      working_directory: environments/dev
+      working_directory: dev
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
