@@ -1,0 +1,26 @@
+name: Terraform Deploy Action
+description: Reusable action to init, plan, and apply Terraform
+inputs:
+   working_directory:
+    required: true
+    description: Directory where Terraform code is located
+  terraform_version:
+     required: false
+     default: "1.6.0"
+     description: Terraform version to use
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: ${{ inputs.terraform_version }}
+
+    - name: Run Terraform Script
+      run: bash ${{ github.action_path }}/run.sh
+      shell: bash
+      env:
+        WORKING_DIR: ${{ inputs.working_directory }}
+        AWS_ACCESS_KEY_ID: ${{ env.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ env.AWS_SECRET_ACCESS_KEY }}
