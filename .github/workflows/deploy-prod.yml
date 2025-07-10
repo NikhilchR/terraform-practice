@@ -5,7 +5,7 @@ on:
 
 jobs:
   call-deploy:
-    uses: ./.github/workflows/reusable-deploy-dev-stg-prod.yml
+    uses: ./reusable-deploy-dev-stg-prod.yml
     with:
       environment: production
       working_directory: environments/prod
