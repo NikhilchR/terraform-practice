@@ -1,0 +1,102 @@
+resource "azurerm_resource_group" "rg" {
+  for_each = tomap({
+    a_group       = "eastus"
+    another_group = "westus2"
+  })
+  name     = each.key
+  location = each.value
+}
+
+output "rg_names_only" {
+  value = [for rg in azurerm_resource_group.rg : rg.name]
+}
+
+
+resource "aws_iam_user" "the-accounts" {
+  for_each = toset(["Todd", "James", "Alice", "Dottie"])
+  name     = each.key
+}
+
+# my_buckets.tf
+module "bucket" {
+  for_each = toset(["assets", "media"])
+  source   = "./publish_bucket"
+  name     = "${each.key}_bucket"
+}
+
+# publish_bucket/bucket-and-cloudfront.tf
+variable "name" {} # this is the input parameter of the module
+
+resource "aws_s3_bucket" "example" {
+  # Because var.name includes each.key in the calling
+  # module block, its value will be different for
+  # each instance of this module.
+  bucket = var.name
+
+  # ...
+}
+
+resource "aws_iam_user" "deploy_user" {
+  # ...
+}
+
+
+
+You're using the terraform_data resource in combination with replace_triggered_by to force a replacement of a resource (example_database.test) when a variable (revision) changes — a useful lifecycle management technique when a resource doesn’t naturally trigger a change from its inputs.
+
+🔍 What This Does:
+🧩 Code Summary:
+hcl
+Copy
+Edit
+variable "revision" {
+  default = 1
+}
+
+resource "terraform_data" "replacement" {
+  input = var.revision
+}
+
+resource "example_database" "test" {
+  lifecycle {
+    replace_triggered_by = [terraform_data.replacement]
+  }
+}
+terraform_data.replacement tracks var.revision.
+
+Changing revision will re-create terraform_data.replacement.
+
+example_database.test will be replaced when terraform_data.replacement is replaced.
+
+✅ Use Case
+If example_database.test doesn't have any normal input that would trigger a replacement (e.g., changes to config), but you still want to control replacement manually (via a version bump, revision number, etc.), this technique works well.
+
+✅ Example Output
+If you want to output the revision or indicate a trigger:
+
+hcl
+Copy
+Edit
+output "current_revision" {
+  value = terraform_data.replacement.input
+}
+
+output "database_id" {
+  value = example_database.test.id
+}
+🧪 What Happens on Revision Change?
+When you change:
+
+h
+Copy
+Edit
+variable "revision" {
+  default = 2
+}
+Terraform will do the following:
+
+Replace terraform_data.replacement
+
+Then replace example_database.test (because of replace_triggered_by)
+
+Even though none of example_database.test’s direct inputs changed

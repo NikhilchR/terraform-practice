@@ -1,0 +1,14 @@
+name: Deploy to Staging
+
+on:
+  workflow_dispatch:
+
+jobs:
+  call-deploy:
+    uses: ./reusable-deploy-dev-stg-prod.yml
+    with:
+      environment: staging
+      working_directory: environments/staging
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.STAGING_AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.STAGING_AWS_SECRET_ACCESS_KEY }}
